@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(216, 50%, 8%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(215, 19%, 15%);
+  --muted-foreground: hsl(215, 10%, 64%);
+  --popover: hsl(216, 50%, 8%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(216, 34%, 17%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(215, 19%, 15%);
+  --input: hsl(215, 19%, 15%);
+  --primary: hsl(155, 100%, 50%);
+  --primary-foreground: hsl(216, 50%, 8%);
+  --secondary: hsl(215, 19%, 15%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(215, 19%, 15%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 62.8%, 60%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(155, 100%, 50%);
+  --radius: 0.5rem;
+
+  /* Custom color variables */
+  --midnight: hsl(216, 50%, 8%);
+  --elevated: hsl(216, 34%, 17%);
+  --neon-green: hsl(155, 100%, 50%);
+  --text-secondary: hsl(215, 16%, 58%);
+}
+
+.dark {
+  --background: hsl(216, 50%, 8%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(215, 19%, 15%);
+  --muted-foreground: hsl(215, 10%, 64%);
+  --popover: hsl(216, 50%, 8%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(216, 34%, 17%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(215, 19%, 15%);
+  --input: hsl(215, 19%, 15%);
+  --primary: hsl(155, 100%, 50%);
+  --primary-foreground: hsl(216, 50%, 8%);
+  --secondary: hsl(215, 19%, 15%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(215, 19%, 15%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 62.8%, 60%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(155, 100%, 50%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-inter antialiased bg-background text-foreground;
+    background-color: var(--midnight);
+    color: var(--foreground);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-manrope;
+  }
+}
+
+@layer components {
+  .gradient-text {
+    background: linear-gradient(135deg, var(--neon-green) 0%, hsl(195, 100%, 50%) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-glow {
+    background: radial-gradient(circle at 50% 50%, hsla(155, 100%, 50%, 0.1) 0%, transparent 50%);
+  }
+
+  .card-glow {
+    box-shadow: 0 0 40px hsla(155, 100%, 50%, 0.1);
+  }
+
+  .typing-animation {
+    overflow: hidden;
+    border-right: 3px solid var(--neon-green);
+    white-space: nowrap;
+    margin: 0 auto;
+    letter-spacing: 0.1em;
+    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+  }
+
+  .pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+
+  .slide-up {
+    animation: slideUp 0.8s ease-out forwards;
+  }
+}
+
+@layer utilities {
+  .font-manrope {
+    font-family: 'Manrope', sans-serif;
+  }
+
+  .font-inter {
+    font-family: 'Inter', sans-serif;
+  }
+
+  .font-jetbrains {
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .bg-midnight {
+    background-color: var(--midnight);
+  }
+
+  .bg-elevated {
+    background-color: var(--elevated);
+  }
+
+  .bg-neon-green {
+    background-color: var(--neon-green);
+  }
+
+  .text-neon-green {
+    color: var(--neon-green);
+  }
+
+  .text-secondary {
+    color: var(--text-secondary);
+  }
+
+  .text-midnight {
+    color: var(--midnight);
+  }
+
+  .border-elevated {
+    border-color: var(--elevated);
+  }
+
+  .border-neon-green {
+    border-color: var(--neon-green);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: var(--neon-green); }
+}
