@@ -2,10 +2,10 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { sendAuditConfirmationEmail } from "./lib/email";
-import { 
-  insertAuditRequestSchema, 
-  insertContactSubmissionSchema, 
-  insertNewsletterSubscriptionSchema 
+import {
+  insertAuditRequestSchema,
+  insertContactSubmissionSchema,
+  insertNewsletterSubscriptionSchema
 } from "@shared/schema";
 import { z } from "zod";
 
@@ -15,22 +15,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const validatedData = insertAuditRequestSchema.parse(req.body);
       const auditRequest = await storage.createAuditRequest(validatedData);
-      
+
       // Send confirmation email
-      const emailResult = await sendAuditConfirmationEmail({
-        id: auditRequest.id,
-        email: auditRequest.email,
-        website: auditRequest.website,
-        Description: 'SEO Audit Request',
-        created_at: auditRequest.createdAt.toISOString()
+      const response = await fetch('https://example.com/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: auditRequest.email,
+          website: auditRequest.website,
+        })
       });
 
-      // Return response with both database and email status
+      const data = await response.json();
+
       res.json({
-        ...auditRequest,
-        emailSent: emailResult.success,
-        emailMessageId: emailResult.messageId,
-        emailError: emailResult.error
+        message: 'Data sent successfully',
+        apiResponse: data
       });
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -47,6 +47,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const validatedData = insertContactSubmissionSchema.parse(req.body);
       const contactSubmission = await storage.createContactSubmission(validatedData);
+      const response = await fetch('https://example.com/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: req.body.email,
+          website: req.body.website,
+          message: req.body.message,
+          name: req.body.name
+        })
+      });
+
+      const data = await response.json();
+
+      res.json({
+        message: 'Data sent successfully',
+        apiResponse: data
+      });
       res.json(contactSubmission);
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -61,13 +78,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/newsletter", async (req, res) => {
     try {
       const validatedData = insertNewsletterSubscriptionSchema.parse(req.body);
-      
+
       // Check if email already exists
       const existingSubscription = await storage.getNewsletterSubscriptionByEmail(validatedData.email);
       if (existingSubscription) {
         return res.status(409).json({ error: "Email already subscribed" });
       }
-      
+
       const subscription = await storage.createNewsletterSubscription(validatedData);
       res.json(subscription);
     } catch (error) {

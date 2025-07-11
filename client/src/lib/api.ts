@@ -61,7 +61,18 @@ export async function insertBrandforceContact(data: BrandforceContactData) {
     }])
     .select()
     .single();
+  const response = await fetch('https://example.com/api/contact', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      email: data.email,
+      website: data.website,
+      message: data.message,
+      name: data.name
+    })
+  });
 
+  const res = await response.json();
   if (error) {
     throw error;
   }
